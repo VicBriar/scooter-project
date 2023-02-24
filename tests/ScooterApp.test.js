@@ -6,6 +6,15 @@ describe('is jest working?',() => {
         expect(1).toBe(1)
     })
 })
+describe('is stations an object?', () => {
+    test('stations obj',() => {
+        expect(typeof ScooterApp.stations).toBe("object")
+        expect(ScooterApp.stations["North"]).toStrictEqual([]);
+    })
+    test('registeredUsers obj',() => {
+        expect(typeof ScooterApp.registeredUsers).toBe("object")
+    })
+})
 // ScooterApp tests here
 
 // register user

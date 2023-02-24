@@ -2,7 +2,13 @@ const User = require('./User')
 const Scooter = require('./Scooter')
 
 class ScooterApp {
-  // ScooterApp code here
+  static stations = {
+    "North": [],
+    "South": [],
+    "East": [],
+    "West": []
+  }
+  static registeredUsers = {}
 }
 
 module.exports = ScooterApp
