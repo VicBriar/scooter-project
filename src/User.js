@@ -29,6 +29,9 @@ class User {
     return this.#password;
   }
   setNewPassword(password){
+    if(!password){
+      throw new Error("you must enter a new password!")
+    }
     this.#password = password;
     return "Password Changed!"
   }

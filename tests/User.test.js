@@ -15,6 +15,8 @@ describe('User object & props',()=>{
         expect(user.username).toBe("foo")
         expect(user.getPassword()).toBe("bar")
         expect(user.age).toBe(25)
+        expect(user.loggedIn).toBe(false)
+
     })
     //error tests
     describe('init & init errors',()=>{
@@ -37,14 +39,26 @@ describe('User object & props',()=>{
 
 describe('User methods',() => {
     const user = new User("foo","bar",25)
-   // test login error
-   test('login',() => {
-        expect(user.loggedIn).toBe(false)
-    })
     // test login
+    test('login wrong password error',() => {
+        expect(() => user.login("I'm the wrong password!")).toThrowError("Password is incorrect")
+    })
     test('login',() => {
         user.login(user.getPassword())
         expect(user.loggedIn).toBe(true)
+    })
+    //test logout
+    test('logout',() => {
+        user.logout()
+        expect(user.loggedIn).toBe(false)
+    })
+    //test setNewPassword
+    test('setNewPassword error',() => {
+        expect(() => user.setNewPassword("")).toThrowError("you must enter a new password!")
+    })
+    test('set new Password', () => {
+        user.setNewPassword("baz")
+        expect(user.getPassword()).toBe("baz")
     })
     
 })
