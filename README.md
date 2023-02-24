@@ -108,8 +108,8 @@ Each `ScooterApp` should include the following properties
 
 Each `ScooterApp` should include the following methods 
 - `registerUser(username, password, age)`
-    - If the user is not already registered AND is 18 or older, then add them as a new registered user. Log to the console that the `user has been registered` and return the user.
-    - If the user cannot be registered, throw an error: `already registered` or `too young to register`.
+    ✔️- If the user is not already registered AND is 18 or older, then add them as a new registered user. Log to the console that the `user has been registered` and return the user.
+    ✔️- If the user cannot be registered, throw an error: `already registered` or `too young to register`.
 - `loginUser(username, password)`
     - Locate the registered user by name and call its login method. Log to the console that the `user has been logged in`.
     - If the user cannot be located or if the password is incorrect, then throw an error: `Username or password is incorrect`.

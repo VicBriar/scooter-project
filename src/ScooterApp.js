@@ -1,5 +1,6 @@
 const User = require('./User')
 const Scooter = require('./Scooter')
+const errorsObj = require('./errors')
 
 class ScooterApp {
   static stations = {
@@ -10,13 +11,19 @@ class ScooterApp {
   }
   static registeredUsers = {}
 //methods
-
-////registerUser
-  static registerUser(username="", password="", age){
+  static userExists(username){
     if(Object.keys(ScooterApp.registeredUsers).includes(username)){
-      throw new Error("user already exists, please login instead")
+      return true
+    } else {
+      return false
+    }
+  }
+////registerUser
+  static registerUser(username="", password="", age=0){
+    if(ScooterApp.userExists(username)){
+      throw new Error(errorsObj.dsntExstUsr)
     } else if(age < 18) {
-      throw new Error("You must be at least 18 years old to sign up")
+      throw new Error(errorsObj.tooYoung)
     } else {
       ScooterApp.registeredUsers[username] = new User(username,password,age);
       console.log("user has been registered")
@@ -24,11 +31,29 @@ class ScooterApp {
     }
   }
 
-  ////login
+  ////loginUser
+  static loginUser(username="",password=""){
+    if(!username){
+      throw new Error(errorsObj.needUsr)
+    //password error is handled by userobj below
+    }else if(ScooterApp.userExists(username)){
+      ScooterApp.registeredUsers[username].login(password);
+      console.log("user has been logged in")
+      return ScooterApp.registeredUsers[username];
+    } else {
+      throw new Error(errorsObj.dsntExstUsr)
+    }
 
+  }
+
+  ////user password reset
   ////log out
   ////rent scooter
   ////dock scooter
+  ////print, my beloved
+  static print(){
+    console.log(ScooterApp);
+  }
 
 }
 

@@ -43,7 +43,7 @@ describe('scooter methods', () => {
   test('rent broken scooter error',()=> {
     let scooter = new Scooter("South")
     scooter.isBroken = true;
-    expect(() => scooter.rent("bob")).toThrowError("scooter is broken and cannot be checked out, please try again in 5 seconds :)")
+    expect(() => scooter.rent("bob")).toThrowError(errorsObj.scooterBroken)
   })
   ////low battery
   describe ('rent battery low',() => {
@@ -51,17 +51,14 @@ describe('scooter methods', () => {
     test('rent dying scooter error',()=> {
       let scooter = new Scooter("South")
       scooter.charge = 20;
-      expect(()=> scooter.rent("bob")).toThrowError("scooter needs to charge first. Please try again later")
+      expect(()=> scooter.rent("bob")).toThrowError(errorsObj.scooterDying)
       expect(scooter.user).toBe(null)
-  })
-  ////////15
-  test('rent dying scooter error',()=> {
-    let scooter = new Scooter("South")
-    scooter.charge = 15;
-    expect(()=> scooter.rent("bob")).toThrowError("scooter needs to charge first. Please try again later")
+      scooter.charge = 15;
+    expect(()=> scooter.rent("bob")).toThrowError(errorsObj.scooterDying)
     expect(scooter.user).toBe(null)
-    })
   })
+})
+
   //user added 
   test('did user get added & is station gone?',()=>{
     let scooter = new Scooter("South")

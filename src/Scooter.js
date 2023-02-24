@@ -1,8 +1,10 @@
+const errorsObj = require("./errors");
+
 class Scooter{
   static nextSerial = 1;
   constructor(station){
     if(!station){
-      throw new Error("Station name required")
+      throw new Error(errorsObj.needStation)
     }
     this.station = station;
     this.user = null;
@@ -13,15 +15,18 @@ class Scooter{
   //methods
   rent(user){
     if(this.isBroken){
-      throw new Error("scooter is broken and cannot be checked out, please try again in 5 seconds :)")
+      throw new Error(errorsObj.scooterBroken)
     } else if(this.charge <= 20) {
-      throw new Error("scooter needs to charge first. Please try again later")
+      throw new Error(errorsObj.scooterDying)
     }
     this.station = null;
     this.user = user;
   }
 
   dock(station) {
+    if(!station){
+      throw new Error(errorsObj.needStation)
+    }
     this.station = station
     this.user = null;
   }

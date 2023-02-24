@@ -32,7 +32,7 @@ describe('Register User tests',()=>{
     })
     test('Errors from userObj constructor',() => {
         expect(()=> ScooterApp.registerUser(undefined,"omgIloveScootersSoMuch",25)).toThrowError(errorsObj.needUsr)
-        expect(()=> ScooterApp.registerUser("BobbyScooterLover13",undefined,25)).toThrowError("you must have a password!")
+        expect(()=> ScooterApp.registerUser("BobbyScooterLover13",undefined,25)).toThrowError(errorsObj.needPswd)
         expect(()=> ScooterApp.registerUser("BobbyScooterLover13","omgIloveScootersSoMuch",undefined)).toThrowError(errorsObj.tooYoung)
     })
 })
@@ -45,9 +45,9 @@ describe("login user tests",()=>{
     })
     test("user login errors",() => {
         expect(()=> ScooterApp.loginUser("toristori","wowIhatesc00ters")).toThrowError(errorsObj.dsntExstUsr)
-        expect(() => ScooterApp.loginUser("BobbyScooterLover11","wowIhatesc00ters")).toThrowError("password is incorrect")
+        expect(() => ScooterApp.loginUser("BobbyScooterLover11","wowIhatesc00ters")).toThrowError(errorsObj.wrongPswd)
         expect(()=> ScooterApp.loginUser(null,"wowIhatesc00ters")).toThrowError(errorsObj.needUsr)
-        expect(() => ScooterApp.loginUser("BobbyScooterLover11",null)).toThrowError("password is incorrect")
+        expect(() => ScooterApp.loginUser("BobbyScooterLover11",null)).toThrowError(errorsObj.wrongPswd)
     })
     
 })

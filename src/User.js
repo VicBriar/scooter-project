@@ -1,13 +1,15 @@
+const errorsObj = require("./errors");
+
 class User {
   //password is protected
   #password;
   constructor(username,password,age){
     if(!username){
-      throw new Error("you must have a username!")
+      throw new Error(errorsObj.needUsr)
     } else if(!password){
-      throw new Error("you must have a password!")
+      throw new Error(errorsObj.needPswd)
     }else if(!age || age < 1){
-      throw new Error("you must have an age!")
+      throw new Error(errorsObj.needAge)
     }
     this.username = username;
     this.#password = password;
@@ -19,7 +21,7 @@ class User {
     if(this.#password === password){
       this.loggedIn = true
     } else {
-      throw new Error("Password is incorrect")
+      throw new Error(errorsObj.wrongPswd)
     }
   }
   logout() {
@@ -29,8 +31,8 @@ class User {
     return this.#password;
   }
   setNewPassword(password){
-    if(!password){
-      throw new Error("you must enter a new password!")
+    if(!password || password === this.#password){
+      throw new Error(errorsObj.notNewPsd)
     }
     this.#password = password;
     return "Password Changed!"
