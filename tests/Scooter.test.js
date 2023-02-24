@@ -64,6 +64,7 @@ describe('scooter methods', () => {
   //user added 
   test('did user get added & is station gone?',()=>{
     let scooter = new Scooter("South")
+    //THIS NEEDS TO CALL SCOOTERAPP
     let user = new User("BobbyScooterLover10","omgIloveSc00tersSoMuch",50)
     scooter.rent(user)
     expect(scooter.user).toBe(user)
