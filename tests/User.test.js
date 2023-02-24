@@ -1,4 +1,5 @@
 const User = require('../src/User')
+const errorsObj = require('../src/errors')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -21,16 +22,16 @@ describe('User object & props',()=>{
     //error tests
     describe('init & init errors',()=>{
         test('No Username',()=>{
-            expect(() => new User("","bar",0)).toThrowError("you must have a username!")
-            expect(() => new User(0)).toThrowError("you must have a username!")
+            expect(() => new User("","bar",0)).toThrowError("you must have a username")
+            expect(() => new User(0)).toThrowError("you must have a username")
         })
         test('No Password',()=>{
-            expect(() => new User("foo","",0)).toThrowError("you must have a password!")
-            expect(() => new User("bar",0)).toThrowError("you must have a password!")
+            expect(() => new User("foo","",0)).toThrowError("you must have a password")
+            expect(() => new User("bar",0)).toThrowError("you must have a password")
         })
         test('No age',() => {
-            expect(() => new User("foo","bar",0)).toThrowError("you must have an age!")
-            expect(() => new User("foo","bar")).toThrowError("you must have an age!")
+            expect(() => new User("foo","bar",0)).toThrowError("you must have an age")
+            expect(() => new User("foo","bar")).toThrowError("you must have an age")
         })
         
     })
@@ -41,7 +42,7 @@ describe('User methods',() => {
     const user = new User("foo","bar",25)
     // test login
     test('login wrong password error',() => {
-        expect(() => user.login("I'm the wrong password!")).toThrowError("Password is incorrect")
+        expect(() => user.login("I'm the wrong password!")).toThrowError("password is incorrect")
     })
     test('login',() => {
         user.login(user.getPassword())
@@ -54,7 +55,7 @@ describe('User methods',() => {
     })
     //test setNewPassword
     test('setNewPassword error',() => {
-        expect(() => user.setNewPassword("")).toThrowError("you must enter a new password!")
+        expect(() => user.setNewPassword("")).toThrowError("you must enter a new password")
     })
     test('set new Password', () => {
         user.setNewPassword("baz")

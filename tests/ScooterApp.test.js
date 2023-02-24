@@ -1,6 +1,7 @@
 const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const ScooterApp = require('../src/ScooterApp')
+const errorsObj = require('../src/errors')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -26,20 +27,39 @@ describe('Register User tests',()=>{
         expect(ScooterApp.registeredUsers["BobbyScooterLover11"].age).toBe(50)
     })
     test('Errors',() => {
-        expect(() => ScooterApp.registerUser("BobbyScooterLover11","omgIloveSc00tersSoMuch",50)).toThrowError("user already exists, please login instead")
-        expect(() => ScooterApp.registerUser("BobbyScooterLover12","omgIloveSc00tersSoMuch",0)).toThrowError("You must be at least 18 years old to sign up")
+        expect(() => ScooterApp.registerUser("BobbyScooterLover11","omgIloveSc00tersSoMuch",50)).toThrowError(errorsObj.dsntExstUsr)
+        expect(() => ScooterApp.registerUser("BobbyScooterLover12","omgIloveSc00tersSoMuch",0)).toThrowError(errorsObj.tooYoung)
     })
     test('Errors from userObj constructor',() => {
-        expect(()=> ScooterApp.registerUser("","omgIloveScootersSoMuch",25)).toThrowError("you must have a username!")
-        expect(()=> ScooterApp.registerUser("BobbyScooterLover13","",25)).toThrowError("you must have a password!")  
+        expect(()=> ScooterApp.registerUser(undefined,"omgIloveScootersSoMuch",25)).toThrowError(errorsObj.needUsr)
+        expect(()=> ScooterApp.registerUser("BobbyScooterLover13",undefined,25)).toThrowError("you must have a password!")
+        expect(()=> ScooterApp.registerUser("BobbyScooterLover13","omgIloveScootersSoMuch",undefined)).toThrowError(errorsObj.tooYoung)
     })
 })
 
-//// log in
-
+//// log in user
+describe("login user tests",()=>{
+    test("user login",()=>{
+        ScooterApp.loginUser("BobbyScooterLover11","omgIloveSc00tersSoMuch")
+        expect(ScooterApp.registeredUsers["BobbyScooterLover11"].loggedIn).toBe(true)
+    })
+    test("user login errors",() => {
+        expect(()=> ScooterApp.loginUser("toristori","wowIhatesc00ters")).toThrowError(errorsObj.dsntExstUsr)
+        expect(() => ScooterApp.loginUser("BobbyScooterLover11","wowIhatesc00ters")).toThrowError("password is incorrect")
+        expect(()=> ScooterApp.loginUser(null,"wowIhatesc00ters")).toThrowError(errorsObj.needUsr)
+        expect(() => ScooterApp.loginUser("BobbyScooterLover11",null)).toThrowError("password is incorrect")
+    })
+    
+})
 
 // log out
 
 // rent scooter
 
 // dock scooter
+//// print test
+describe('Print test',() => {
+    test('print call',() => {
+        ScooterApp.print()
+    })
+})

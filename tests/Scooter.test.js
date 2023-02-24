@@ -1,5 +1,6 @@
 const Scooter = require('../src/Scooter')
 const User = require('../src/User')
+const errorsObj = require('../src/errors')
 
 //typeof scooter === object
 describe('scooter object & props', () => {
