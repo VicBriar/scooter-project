@@ -61,12 +61,12 @@ describe('scooter methods', () => {
     expect(scooter.user).toBe(null)
     })
   })
-  //is user obj? (CREATE TEST AFTER USER OBJ IS COMPLETE)
-  //user added (string; not obj. see above comment)
+  //user added 
   test('did user get added & is station gone?',()=>{
     let scooter = new Scooter("South")
-    scooter.rent("bob")
-    expect(scooter.user).toBe("bob")
+    let user = new User("BobbyScooterLover10","omgIloveSc00tersSoMuch",50)
+    scooter.rent(user)
+    expect(scooter.user).toBe(user)
     expect(scooter.station).toBe(null)
   })
 })
