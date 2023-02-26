@@ -11,6 +11,7 @@ class ScooterApp {
     "West": []
   }
   static registeredUsers = {}
+  static registeredScooters = {}
 //methods
   static userExists(username){
     return Object.keys(ScooterApp.registeredUsers).includes(username);
@@ -77,10 +78,14 @@ class ScooterApp {
     if(!station){
       throw new Error(errorsObj.needStation)
     } else if (ScooterApp.stationExsists(station)) {
-    ScooterApp.stations[station].push(new Scooter(station))
-    let scootIndex = ScooterApp.stations[station].length - 1;
+    // ScooterApp.stations[station].push(new Scooter(station))
+    // let scootIndex = ScooterApp.stations[station].length - 1;
+    // console.log("created new scooter")
+    // return(ScooterApp.stations[station][scootIndex])
+    ScooterApp.registeredScooters[Scooter.nextSerial] = new Scooter(station)
+    ScooterApp.stations[station].push(ScooterApp.registeredScooters[Scooter.nextSerial-1])
     console.log("created new scooter")
-    return(ScooterApp.stations[station][scootIndex])
+    return ScooterApp.registeredScooters[Scooter.nextSerial-1]
     } else {
       throw new Error(errorsObj.dsntExstStation)
     }
@@ -117,13 +122,14 @@ class ScooterApp {
    static dockScooter(scooter,station){
     if(!ScooterApp.stationExsists(station)){
       throw new Error(errorsObj.dsntExstStation)
-    } else if(ScooterApp.stations[station].inclues(scooter)){
+    } else if(ScooterApp.stations[station].includes(scooter)){
       throw new Error(errorsObj.scooterIsDockedHere)
     } else if(!scooter || typeof scooter !== "object") {
       throw new Error(errorsObj.needScooter)
     } else {
-      let index = ScooterApp.stations[scooter.station].findAtIndex(scooter)
-      ScooterApp.stations[station].push(ScooterApp.stations[scooter.station].splice(index,1))
+      let index = ScooterApp.stations[scooter.station].indexOf(scooter)
+      //the splice returns a mini-array with one element, so the [0] returns the item, that gets pushed into the next station's array
+      ScooterApp.stations[station].push(ScooterApp.stations[scooter.station].splice(index,1)[0])
       scooter.dock(station)
 
     } 

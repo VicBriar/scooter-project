@@ -119,6 +119,9 @@ describe('create scooter',() => {
     test("successful creation", () => {
         let ans = ScooterApp.createScooter("North")
         expect(ans).toBeInstanceOf(Scooter);
+        expect(ans.serial).toBe(1)
+        expect(ans.thisUser).toBe(undefined)
+        expect(ans.station).toBe("North")
     })
 })
 
@@ -148,7 +151,20 @@ describe("find Scooter tests",()=>{
 // // dock scooter
 describe("dock scooter",()=>{
     test("station doesn't exist error",() => {
-        expect!!!!! I AM HERE
+        expect(() => ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"Fantasy Station")).toThrowError(errorsObj.dsntExstStation)
+        expect(()=> ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],undefined)).toThrowError(errorsObj.dsntExstStation)
+    })
+    test("scooter is docked here error",() => {
+        expect(() => ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"North")).toThrowError(errorsObj.scooterIsDockedHere)
+    })
+    test("need scooter error",()=>{
+        expect(()=> ScooterApp.dockScooter(undefined,"North")).toThrowError(errorsObj.needScooter)
+        expect(()=> ScooterApp.dockScooter("scooter:)","North")).toThrowError(errorsObj.needScooter)
+    })
+
+    test("scooter docking",() => {
+        ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"South")
+        expect(ScooterApp.registeredScooters["1"].station).toBe("South")
     })
 })
 
