@@ -17,7 +17,8 @@ describe('is stations an object?', () => {
         expect(typeof ScooterApp.registeredUsers).toBe("object")
     })
 })
-// ScooterApp tests here
+// ScooterApp method tests;
+
 //// register user
 describe('Register User tests',()=>{
     test('User object made',() => {
@@ -88,7 +89,7 @@ describe('password reset',() => {
         expect(ScooterApp.registeredUsers[errorsObj.dummyUserName].getPassword()).toBe("Newpassword!")
     })
 })
-// log out
+//// log out
 describe("log out tests",() => {
     test('errors',() => {
         expect(()=> ScooterApp.logoutUser("steveTheFakeUser")).toThrow(errorsObj.dsntExstUsr)
@@ -110,7 +111,7 @@ describe("station exists test",()=>{
         expect(ans).toBe(false);
     })
 })
-//create scooter
+////create scooter
 describe('create scooter',() => {
     test('no station errors',() => {
         expect(() => ScooterApp.createScooter(undefined)).toThrowError(errorsObj.needStation)
@@ -125,7 +126,7 @@ describe('create scooter',() => {
     })
 })
 
-//find Scooter
+////find Scooter
 describe("find Scooter tests",()=>{
     test("no serial error",() => {
         expect(() => ScooterApp.findScooter(undefined,"North")).toThrowError(errorsObj.needSerial)
@@ -152,7 +153,7 @@ describe("find Scooter tests",()=>{
     })
 
 })
-// // dock scooter findScooter
+//// dock scooter findScooter
 describe("dock scooter",()=>{
     test("station doesn't exist error",() => {
         expect(() => ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"Fantasy Station")).toThrowError(errorsObj.dsntExstStation)
@@ -173,14 +174,14 @@ describe("dock scooter",()=>{
     })
 })
 
-// rent scooter
+//// rent scooter
 describe("rent scooter",()=>{
     test("rent scooter scooter erorrs",()=>{
         ScooterApp.loginUser(errorsObj.dummyUserName,"Newpassword!")
         expect(()=>ScooterApp.rentScooter(registeredScooters["10"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
 
         expect(()=>ScooterApp.rentScooter("scooter",ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
-        
+
         expect(()=>ScooterApp.rentScooter(undefined,ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
     })
     test("rent scooter user erorrs",()=>{

@@ -16,7 +16,7 @@ class ScooterApp {
   static userExists(username){
     return Object.keys(ScooterApp.registeredUsers).includes(username);
   }
-////registerUser
+  ////registerUser
   static registerUser(username="", password="", age=0){
     if(ScooterApp.userExists(username)){
       throw new Error(errorsObj.dsntExstUsr)
