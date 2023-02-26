@@ -26,6 +26,9 @@ class User {
     }
   }
   logout() {
+    if(!this.loggedIn){
+      throw new Error(errorsObj.notLoggedIn)
+    }
     this.loggedIn = false;
   }
   getPassword(){

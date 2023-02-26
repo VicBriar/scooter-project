@@ -6,9 +6,6 @@ const { dummyUserName, dummyPassWord } = require('../src/errors')
 
 //typeof scooter === object
 describe('scooter object & props', () => {
-  test('scooter init with station error',()=>{
-    expect(()=> scooter = new Scooter()).toThrowError("Station name required")
-  })
   test('serial number init',()=>{
     let scooter = new Scooter("South")
     let scooter1 = new Scooter("South")
@@ -33,6 +30,9 @@ describe('scooter object & props', () => {
   test('isBroken init',()=>{
     let scooter = new Scooter("South")
     expect(scooter.isBroken).toBe(false)
+  })
+  test("scooter no station init erorr",() => {
+    expect(() => new Scooter("")).toThrowError(errorsObj.needStation)
   })
   
 })
@@ -59,15 +59,13 @@ describe('scooter methods', () => {
     expect(()=> scooter.rent("bob")).toThrowError(errorsObj.scooterDying)
     expect(scooter.user).toBe(null)
   })
+
 })
 
   //user added 
   test('did user get added & is station gone?',()=>{
     let scooter = new Scooter("South")
-    //THIS NEEDS TO CALL SCOOTERAPP
     let user = new User("BobbyScooterLover10","omgIloveSc00tersSoMuch",50)
-    // ScooterApp.registerUser(errorsObj.dummyUserName,dummyPassWord,30)
-    // ScooterApp.rent()
     scooter.rent(user)
     expect(scooter.user).toBe(user)
     expect(scooter.station).toBe(null)
@@ -87,6 +85,14 @@ describe('scooter methods', () => {
   })
 
   //requestRepair method
+  describe("requestrepair tests",() => {
+    test("repair", async () => {
+      const scooter = ScooterApp.createScooter("North")
+      scooter.isBroken = true
+      await scooter.repair()
+      expect(scooter.charge).toBe(100)
+    })
+  })
 
   //charge method
 

@@ -24,7 +24,7 @@ class ScooterApp {
       throw new Error(errorsObj.tooYoung)
     } else {
       ScooterApp.registeredUsers[username] = new User(username,password,age);
-      console.log("user has been registered")
+      console.log(`user ${username} has been registered`)
       return ScooterApp.registeredUsers[username]
     }
   }
@@ -38,7 +38,7 @@ class ScooterApp {
       throw new Error(errorsObj.needPswd)
     }else if(ScooterApp.userExists(username)){
       ScooterApp.registeredUsers[username].login(password);
-      console.log("user has been logged in")
+      console.log(`user ${username} has been logged in`)
       return ScooterApp.registeredUsers[username];
       //if we haven't logged in, that means the user doesn't exsist.
     } else {
@@ -64,7 +64,7 @@ class ScooterApp {
   static logoutUser(username = ""){
     if(ScooterApp.userExists(username)){
       ScooterApp.registeredUsers[username].logout()
-      console.log("user is logged out")
+      console.log(`user ${username}is logged out`)
     } else {
       throw new Error(errorsObj.dsntExstUsr)
     }
@@ -84,8 +84,9 @@ class ScooterApp {
     // return(ScooterApp.stations[station][scootIndex])
     ScooterApp.registeredScooters[Scooter.nextSerial] = new Scooter(station)
     ScooterApp.stations[station].push(ScooterApp.registeredScooters[Scooter.nextSerial-1])
-    console.log("created new scooter")
-    return ScooterApp.registeredScooters[Scooter.nextSerial-1]
+    let serial = Scooter.nextSerial - 1;
+    console.log(`created new scooter, #${serial}`)
+    return ScooterApp.registeredScooters[serial]
     } else {
       throw new Error(errorsObj.dsntExstStation)
     }
@@ -131,7 +132,7 @@ class ScooterApp {
       //the splice returns a mini-array with one element, so the [0] returns the item, that gets pushed into the next station's array
       ScooterApp.stations[station].push(ScooterApp.stations[scooter.station].splice(index,1)[0])
       scooter.dock(station)
-      console.log("scooter is docked")
+      console.log(`scooter #${scooter.serial} is docked`)
     } 
    }
   ////rent scooter
@@ -147,7 +148,7 @@ class ScooterApp {
     } else {
       let index = ScooterApp.stations[scooter.station].indexOf(scooter)
       ScooterApp.stations[scooter.station].splice(index,1)[0].rent(user)
-      console.log("scooter is rented")
+      console.log(`scooter #${scooter.serial} is rented`)
     }
     }
  

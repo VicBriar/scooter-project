@@ -33,6 +33,11 @@ class Scooter{
 
   //recharge()
   //requestRepair()
+  async repair(){
+    await new Promise(resolve => setTimeout(resolve,4900))
+    this.isBroken = false;
+    console.log("repair completed")
+  }
 }
 
 

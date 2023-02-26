@@ -54,6 +54,9 @@ describe('User methods',() => {
         user.logout()
         expect(user.loggedIn).toBe(false)
     })
+    test("logout error",() => {
+        expect(() => user.logout()).toThrowError(errorsObj.notLoggedIn)
+    })
     //test setNewPassword
     test('setNewPassword errors',() => {
         //pswd isn't actually new
