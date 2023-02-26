@@ -2,6 +2,7 @@ const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const ScooterApp = require('../src/ScooterApp')
 const errorsObj = require('../src/errors')
+const { stationExsists } = require('../src/ScooterApp')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -98,10 +99,62 @@ describe("log out tests",() => {
         expect(ScooterApp.registeredUsers[errorsObj.dummyUserName].loggedIn).toBe(false)
     })
 })
+//station exists
+describe("station exists test",()=>{
+    test("true",() => {
+        let ans = ScooterApp.stationExsists("North")
+        expect(ans).toBe(true);
+    })
+    test("false", () => {
+        let ans = ScooterApp.stationExsists("Fantasy Station")
+        expect(ans).toBe(false);
+    })
+})
+//create scooter
+describe('create scooter',() => {
+    test('no station errors',() => {
+        expect(() => ScooterApp.createScooter(undefined)).toThrowError(errorsObj.needStation)
+        expect(() => ScooterApp.createScooter("fantasy station")).toThrowError(errorsObj.dsntExstStation)
+    })
+    test("successful creation", () => {
+        let ans = ScooterApp.createScooter("North")
+        expect(ans).toBeInstanceOf(Scooter);
+    })
+})
+
+//find Scooter
+describe("find Scooter tests",()=>{
+    test("no serial error",() => {
+        expect(() => ScooterApp.findScooter(undefined,"North")).toThrowError(errorsObj.needSerial)
+    })
+    test("bad serial error",() => {
+        expect(() => ScooterApp.findScooter(5,"North")).toThrowError(errorsObj.dsntExstSerial)
+        expect(() => ScooterApp.findScooter(5)).toThrowError(errorsObj.dsntExstSerial)
+    })
+    test("bad station error",() => {
+        expect(() => ScooterApp.findScooter(5,"Fantasy Station")).toThrowError(errorsObj.dsntExstStation)
+    })
+    test("serial and station",() => {
+        expect(ScooterApp.findScooter(1,"North")).toBeInstanceOf(Scooter)
+        expect(ScooterApp.findScooter(1,"North").serial).toBe(1)
+
+    })
+    test("serial, no station",() => {
+        expect(ScooterApp.findScooter(1)).toBeInstanceOf(Scooter)
+        expect(ScooterApp.findScooter(1).serial).toBe(1)
+    })
+
+})
+// // dock scooter
+describe("dock scooter",()=>{
+    test("station doesn't exist error",() => {
+        expect!!!!! I AM HERE
+    })
+})
 
 // rent scooter
 
-// dock scooter
+
 //// print test
 describe('Print test',() => {
     test('print call',() => {

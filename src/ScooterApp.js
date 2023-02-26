@@ -1,7 +1,7 @@
 const User = require('./User')
 const Scooter = require('./Scooter')
 const errorsObj = require('./errors')
-const { needUsr } = require('./errors')
+const { needUsr, needStation } = require('./errors')
 
 class ScooterApp {
   static stations = {
@@ -13,11 +13,7 @@ class ScooterApp {
   static registeredUsers = {}
 //methods
   static userExists(username){
-    if(Object.keys(ScooterApp.registeredUsers).includes(username)){
-      return true
-    } else {
-      return false
-    }
+    return Object.keys(ScooterApp.registeredUsers).includes(username);
   }
 ////registerUser
   static registerUser(username="", password="", age=0){
@@ -72,17 +68,74 @@ class ScooterApp {
       throw new Error(errorsObj.dsntExstUsr)
     }
   }
-
-  ////createScooter() this is called by home office, NOT users
-  static createScooter(station){
-    
+//helper function
+  static stationExsists(station){
+    return Object.keys(ScooterApp.stations).includes(station)
   }
-  ////rent scooter
+  ////createScooter() this is called by home office, NOT users
+  static createScooter(station=""){
+    if(!station){
+      throw new Error(errorsObj.needStation)
+    } else if (ScooterApp.stationExsists(station)) {
+    ScooterApp.stations[station].push(new Scooter(station))
+    let scootIndex = ScooterApp.stations[station].length - 1;
+    console.log("created new scooter")
+    return(ScooterApp.stations[station][scootIndex])
+    } else {
+      throw new Error(errorsObj.dsntExstStation)
+    }
+  }
 
-  ////dock scooter
+  //find scooter
+  static findScooter(serial,station=undefined){
+    if(!serial){
+      throw new Error(errorsObj.needSerial)
+    } else if(station && !ScooterApp.stationExsists(station)){
+      throw new Error(errorsObj.dsntExstStation)
+    }else if(station) {
+      for(let i = 0; i < ScooterApp.stations[station].length; i++){
+        if (ScooterApp.stations[station][i].serial === serial){
+          return ScooterApp.stations[station][i];
+        }
+      }
+      throw new Error(errorsObj.dsntExstScooter)
+    } else if (!station) {
+      let arrayOfStations = Object.keys(ScooterApp.stations);
+      for(let i = 0; i < arrayOfStations.length; i++){
+        for(let k = 0; k < ScooterApp.stations[arrayOfStations[i]].length; k++){
+          if(ScooterApp.stations[arrayOfStations[i]][k].serial === serial){
+            return ScooterApp.stations[arrayOfStations[i]][k];
+          }
+        }
+      }
+      throw new Error(errorsObj.dsntExstScooter)
+    }//else if ends here
+  }
+
+
+   ////dock scooter
+   static dockScooter(scooter,station){
+    if(!ScooterApp.stationExsists(station)){
+      throw new Error(errorsObj.dsntExstStation)
+    } else if(ScooterApp.stations[station].inclues(scooter)){
+      throw new Error(errorsObj.scooterIsDockedHere)
+    } else if(!scooter || typeof scooter !== "object") {
+      throw new Error(errorsObj.needScooter)
+    } else {
+      let index = ScooterApp.stations[scooter.station].findAtIndex(scooter)
+      ScooterApp.stations[station].push(ScooterApp.stations[scooter.station].splice(index,1))
+      scooter.dock(station)
+
+    } 
+   }
+  ////rent scooter
+  static rentScooter(scooter,user){
+    //a! coming up!
+  }
+ 
   ////print, my beloved
   static print(){
-    console.log(ScooterApp);
+    console.log(ScooterApp,ScooterApp.stations);
   }
 
 }
