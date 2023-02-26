@@ -2,7 +2,7 @@ const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const ScooterApp = require('../src/ScooterApp')
 const errorsObj = require('../src/errors')
-const { stationExsists, registeredScooters } = require('../src/ScooterApp')
+const { stationExsists, registeredScooters, findScooter } = require('../src/ScooterApp')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -143,8 +143,12 @@ describe("find Scooter tests",()=>{
 
     })
     test("serial, no station",() => {
-        expect(ScooterApp.registeredScooters["1"]).toBeInstanceOf(Scooter)
-        expect(ScooterApp.registeredScooters["1"].serial).toBe(1)
+        ScooterApp.createScooter("South")
+        ScooterApp.createScooter("East")
+        expect(ScooterApp.findScooter(1, undefined)).toBeInstanceOf(Scooter)
+        expect(ScooterApp.findScooter(1, undefined).serial).toBe(1)
+        expect(ScooterApp.findScooter(1)).toBeInstanceOf(Scooter)
+        expect(ScooterApp.findScooter(1).serial).toBe(1)
     })
 
 })
@@ -172,8 +176,11 @@ describe("dock scooter",()=>{
 // rent scooter
 describe("rent scooter",()=>{
     test("rent scooter scooter erorrs",()=>{
-        expect(()=>ScooterApp.rentScooter(registeredScooters["2"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+        ScooterApp.loginUser(errorsObj.dummyUserName,"Newpassword!")
+        expect(()=>ScooterApp.rentScooter(registeredScooters["10"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+
         expect(()=>ScooterApp.rentScooter("scooter",ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+        
         expect(()=>ScooterApp.rentScooter(undefined,ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
     })
     test("rent scooter user erorrs",()=>{
@@ -189,6 +196,9 @@ describe("rent scooter",()=>{
         expect(ScooterApp.stations[testStation].length).toBeLessThan(testStationlen)
         expect(registeredScooters["1"].user).toBe(ScooterApp.registeredUsers[errorsObj.dummyUserName])
         expect(registeredScooters["1"].station).toBe(null)
+    })
+    test("scooter is already rented errors",() => {
+        expect(()=>ScooterApp.rentScooter(ScooterApp.registeredScooters["1"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.scooterIsRented)
     })
 })
 
