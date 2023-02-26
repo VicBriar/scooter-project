@@ -1,6 +1,7 @@
 const User = require('./User')
 const Scooter = require('./Scooter')
 const errorsObj = require('./errors')
+const { needUsr } = require('./errors')
 
 class ScooterApp {
   static stations = {
@@ -36,10 +37,13 @@ class ScooterApp {
     if(!username){
       throw new Error(errorsObj.needUsr)
     //password error is handled by userobj below
+    }else if(!password){
+      throw new Error(errorsObj.needPswd)
     }else if(ScooterApp.userExists(username)){
       ScooterApp.registeredUsers[username].login(password);
       console.log("user has been logged in")
       return ScooterApp.registeredUsers[username];
+      //if we haven't logged in, that means the user doesn't exsist.
     } else {
       throw new Error(errorsObj.dsntExstUsr)
     }
@@ -47,8 +51,34 @@ class ScooterApp {
   }
 
   ////user password reset
+  static resetPassword(username = "", password = "",newpassword="") {
+    if(!username){
+      throw new Error(errorsObj.needUsr)
+    } else if(!password || !newpassword){
+      throw new Error(errorsObj.needPswd)
+    } else if (ScooterApp.userExists(username)){
+      ScooterApp.registeredUsers[username].setNewPassword(password,newpassword)
+    } else {
+      throw new Error(errorsObj.dsntExstUsr)
+    }
+    }
+
   ////log out
+  static logoutUser(username = ""){
+    if(ScooterApp.userExists(username)){
+      ScooterApp.registeredUsers[username].logout()
+      console.log("user is logged out")
+    } else {
+      throw new Error(errorsObj.dsntExstUsr)
+    }
+  }
+
+  ////createScooter() this is called by home office, NOT users
+  static createScooter(station){
+    
+  }
   ////rent scooter
+
   ////dock scooter
   ////print, my beloved
   static print(){

@@ -1,5 +1,6 @@
 const User = require('../src/User')
 const errorsObj = require('../src/errors')
+const { registerUser } = require('../src/ScooterApp')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -54,12 +55,22 @@ describe('User methods',() => {
         expect(user.loggedIn).toBe(false)
     })
     //test setNewPassword
-    test('setNewPassword error',() => {
-        expect(() => user.setNewPassword("")).toThrowError(errorsObj.notNewPsd)
+    test('setNewPassword errors',() => {
+        //pswd isn't actually new
+        expect(() => user.setNewPassword("bar","bar")).toThrowError(errorsObj.notNewPsd)
+        //pswd isn't defined
+        expect(() => user.setNewPassword(undefined,"bar")).toThrowError(errorsObj.needPswd)
+        //new pswd isn't defined
+        expect(() => user.setNewPassword("bar",undefined)).toThrowError(errorsObj.notNewPswd)
+        //both aren't defined
+        expect(() => user.setNewPassword(undefined,undefined)).toThrowError(errorsObj.needPswd)
+
     })
     test('set new Password', () => {
-        user.setNewPassword("baz")
-        expect(user.getPassword()).toBe("baz")
+        const user2 = new User(errorsObj.dummyUserName,errorsObj.dummyPassWord,50)
+        user2.login(user2.getPassword())
+        user2.setNewPassword(user2.getPassword(),"baz")
+        expect(user2.getPassword()).toBe("baz")
     })
     
 })

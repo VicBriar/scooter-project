@@ -23,13 +23,14 @@ class Scooter{
     this.user = user;
   }
 
-  dock(station) {
+  dock(station="") {
     if(!station){
       throw new Error(errorsObj.needStation)
     }
     this.station = station
     this.user = null;
   }
+
   //recharge()
   //requestRepair()
 }

@@ -1,6 +1,8 @@
 const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const errorsObj = require('../src/errors')
+const ScooterApp = require('../src/ScooterApp')
+const { dummyUserName, dummyPassWord } = require('../src/errors')
 
 //typeof scooter === object
 describe('scooter object & props', () => {
@@ -64,6 +66,8 @@ describe('scooter methods', () => {
     let scooter = new Scooter("South")
     //THIS NEEDS TO CALL SCOOTERAPP
     let user = new User("BobbyScooterLover10","omgIloveSc00tersSoMuch",50)
+    // ScooterApp.registerUser(errorsObj.dummyUserName,dummyPassWord,30)
+    // ScooterApp.rent()
     scooter.rent(user)
     expect(scooter.user).toBe(user)
     expect(scooter.station).toBe(null)
@@ -76,6 +80,10 @@ describe('scooter methods', () => {
     scooter.dock("North")
     expect(scooter.station).toBe("North")
     expect(scooter.user).toBe(null)
+  })
+  test('failed to dock; no input',() => {
+    let scooter = new Scooter("South")
+    expect(() => scooter.dock(undefined)).toThrowError(errorsObj.needStation)
   })
 
   //requestRepair method

@@ -44,15 +44,60 @@ describe("login user tests",()=>{
         expect(ScooterApp.registeredUsers["BobbyScooterLover11"].loggedIn).toBe(true)
     })
     test("user login errors",() => {
+        //username
+        ////wrong username
         expect(()=> ScooterApp.loginUser("toristori","wowIhatesc00ters")).toThrowError(errorsObj.dsntExstUsr)
+        ////username undefined
+        expect(()=> ScooterApp.loginUser(undefined,"wowIhatesc00ters")).toThrowError(errorsObj.needUsr)
+        
+        //password
+        ////pswd wrong
         expect(() => ScooterApp.loginUser("BobbyScooterLover11","wowIhatesc00ters")).toThrowError(errorsObj.wrongPswd)
-        expect(()=> ScooterApp.loginUser(null,"wowIhatesc00ters")).toThrowError(errorsObj.needUsr)
-        expect(() => ScooterApp.loginUser("BobbyScooterLover11",null)).toThrowError(errorsObj.wrongPswd)
+        ////pswd undefined
+        expect(() => ScooterApp.loginUser("BobbyScooterLover11",undefined)).toThrowError(errorsObj.needPswd)
     })
     
 })
+//// password Reset
+describe('password reset',() => {
+    ScooterApp.registerUser(errorsObj.dummyUserName,errorsObj.dummyPassWord,30)
+    test("errors, username",() => {
+        expect(() => ScooterApp.resetPassword("wrong-user-name",errorsObj.dummyPassWord,"newPassword")).toThrowError(errorsObj.dsntExstUsr)
 
+        expect(() => ScooterApp.resetPassword(undefined,errorsObj.dummyPassWord,"newpasswird")).toThrowError(errorsObj.needUsr)
+    })
+    test("errors, password",() => {
+        expect(() => ScooterApp.resetPassword(errorsObj.dummyUserName,undefined,"newpasswird")).toThrowError(errorsObj.needPswd)
+
+        expect(() => ScooterApp.resetPassword(errorsObj.dummyUserName,errorsObj.dummyPassWord,errorsObj.dummyPassWord)).toThrowError(errorsObj.notNewPsd)
+    })
+    
+    test("errors, new password",() => {
+        //no new password
+        expect(() => ScooterApp.resetPassword(errorsObj.dummyUserName,errorsObj.dummyPassWord,undefined)).toThrowError(errorsObj.needPswd)
+        //not logged in
+        expect(() => ScooterApp.resetPassword(errorsObj.dummyUserName,errorsObj.dummyPassWord,"new password")).toThrowError(errorsObj.loggedIn)
+
+        //log in user to do final test; wrong password
+        ScooterApp.loginUser(errorsObj.dummyUserName,errorsObj.dummyPassWord)
+        expect(() => ScooterApp.resetPassword(errorsObj.dummyUserName,"wrongpasswrord","new password")).toThrowError(errorsObj.wrongPswd)
+    })
+    test("sucessful reset",() => {
+        ScooterApp.resetPassword(errorsObj.dummyUserName,errorsObj.dummyPassWord,"Newpassword!")
+        expect(ScooterApp.registeredUsers[errorsObj.dummyUserName].getPassword()).toBe("Newpassword!")
+    })
+})
 // log out
+describe("log out tests",() => {
+    test('errors',() => {
+        expect(()=> ScooterApp.logoutUser("steveTheFakeUser")).toThrow(errorsObj.dsntExstUsr)
+        expect(() => ScooterApp.logoutUser(undefined)).toThrow(errorsObj.dsntExstUsr)
+    })
+    test('success',()=>{
+        ScooterApp.logoutUser(errorsObj.dummyUserName)
+        expect(ScooterApp.registeredUsers[errorsObj.dummyUserName].loggedIn).toBe(false)
+    })
+})
 
 // rent scooter
 

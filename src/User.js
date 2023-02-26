@@ -1,3 +1,4 @@
+const { mustLogin } = require("./errors");
 const errorsObj = require("./errors");
 
 class User {
@@ -18,7 +19,7 @@ class User {
   }
 
   login(password){
-    if(this.#password === password){
+    if(this.getPassword() === password){
       this.loggedIn = true
     } else {
       throw new Error(errorsObj.wrongPswd)
@@ -30,13 +31,20 @@ class User {
   getPassword(){
     return this.#password;
   }
-  setNewPassword(password){
-    if(!password || password === this.#password){
+  setNewPassword(password="",newpassword=""){
+    if(!password){
+      throw new Error(errorsObj.needPswd)
+    } else if(!newpassword || newpassword === password){
       throw new Error(errorsObj.notNewPsd)
-    }
-    this.#password = password;
-    return "Password Changed!"
+    } else if (!(this.loggedIn)){
+      throw new Error(errorsObj.mustLogin)
+    } else if (password !== this.getPassword()){
+      throw new Error(errorsObj.wrongPswd)
+    } else {
+    this.#password = newpassword;
+    console.log("Password Changed!")
   }
+}
 }
 
 module.exports = User
