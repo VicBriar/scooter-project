@@ -91,7 +91,7 @@ class ScooterApp {
     }
   }
 
-  //find scooter
+  //find scooter; this is a helper function. It is not super efficient, and I think what I did with the regsiteredscooters object is more efficient. But i have this here just in case it's more efficient.
   static findScooter(serial,station=undefined){
     if(!serial){
       throw new Error(errorsObj.needSerial)
@@ -131,13 +131,25 @@ class ScooterApp {
       //the splice returns a mini-array with one element, so the [0] returns the item, that gets pushed into the next station's array
       ScooterApp.stations[station].push(ScooterApp.stations[scooter.station].splice(index,1)[0])
       scooter.dock(station)
-
+      console.log("scooter is docked")
     } 
    }
   ////rent scooter
   static rentScooter(scooter,user){
-    //a! coming up!
-  }
+    if(!scooter || typeof scooter !== "object"){
+      throw new Error(errorsObj.needScooter)
+    } else if(!user || typeof user !== "object"){
+      throw new Error(errorsObj.needUsr)
+    } else if (scooter.user !== null) {
+      throw new Error(errorsObj.scooterIsRented)
+    } else if(!user.loggedIn){
+      throw new Error(errorsObj.mustLogin)
+    } else {
+      let index = ScooterApp.stations[scooter.station].indexOf(scooter)
+      ScooterApp.stations[scooter.station].splice(index,1)[0].rent(user)
+      console.log("scooter is rented")
+    }
+    }
  
   ////print, my beloved
   static print(){

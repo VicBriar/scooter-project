@@ -2,7 +2,7 @@ const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const ScooterApp = require('../src/ScooterApp')
 const errorsObj = require('../src/errors')
-const { stationExsists } = require('../src/ScooterApp')
+const { stationExsists, registeredScooters } = require('../src/ScooterApp')
 describe('is jest working?',() => {
     test("1 = 1",()=>{
         expect(1).toBe(1)
@@ -143,12 +143,12 @@ describe("find Scooter tests",()=>{
 
     })
     test("serial, no station",() => {
-        expect(ScooterApp.findScooter(1)).toBeInstanceOf(Scooter)
-        expect(ScooterApp.findScooter(1).serial).toBe(1)
+        expect(ScooterApp.registeredScooters["1"]).toBeInstanceOf(Scooter)
+        expect(ScooterApp.registeredScooters["1"].serial).toBe(1)
     })
 
 })
-// // dock scooter
+// // dock scooter findScooter
 describe("dock scooter",()=>{
     test("station doesn't exist error",() => {
         expect(() => ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"Fantasy Station")).toThrowError(errorsObj.dsntExstStation)
@@ -165,11 +165,32 @@ describe("dock scooter",()=>{
     test("scooter docking",() => {
         ScooterApp.dockScooter(ScooterApp.registeredScooters['1'],"South")
         expect(ScooterApp.registeredScooters["1"].station).toBe("South")
+        expect(ScooterApp.registeredScooters["1"].user).toBe(null)
     })
 })
 
 // rent scooter
-
+describe("rent scooter",()=>{
+    test("rent scooter scooter erorrs",()=>{
+        expect(()=>ScooterApp.rentScooter(registeredScooters["2"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+        expect(()=>ScooterApp.rentScooter("scooter",ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+        expect(()=>ScooterApp.rentScooter(undefined,ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.needScooter)
+    })
+    test("rent scooter user erorrs",()=>{
+        expect(()=>ScooterApp.rentScooter(registeredScooters["1"],undefined)).toThrowError(errorsObj.needUsr)
+        expect(()=>ScooterApp.rentScooter(registeredScooters["1"],"fakeuser")).toThrowError(errorsObj.needUsr)
+        ScooterApp.logoutUser(errorsObj.dummyUserName)
+        expect(()=>ScooterApp.rentScooter(registeredScooters["1"],ScooterApp.registeredUsers[errorsObj.dummyUserName])).toThrowError(errorsObj.mustLogin)
+    })
+    test("rent scooter success",()=>{
+        const testStation = registeredScooters["1"].station
+        const testStationlen = testStation.length
+        ScooterApp.rentScooter(registeredScooters["1"], ScooterApp.loginUser(errorsObj.dummyUserName,"Newpassword!"))
+        expect(ScooterApp.stations[testStation].length).toBeLessThan(testStationlen)
+        expect(registeredScooters["1"].user).toBe(ScooterApp.registeredUsers[errorsObj.dummyUserName])
+        expect(registeredScooters["1"].station).toBe(null)
+    })
+})
 
 //// print test
 describe('Print test',() => {
