@@ -1,10 +1,9 @@
 ![logo](https://user-images.githubusercontent.com/44912347/202296600-c5f247d6-9616-49db-88f0-38433429d781.jpg)
 
 >Q's for my coaches;
-1) looking at my registeredScooters object, and my "find scooter" function, which is optomized? is there a better solution? 
 
 2) I have a LOT of if(!parameter){throwerror}else if(!parameter)..ect.. how do the pros do this? 
-3) 99% coverage QmQ
+
 # Scooter Project
 You are a Software Engineer for the city of Baltimore, and you have been asked to design, test, and code the backend for an Electric Scooter Hire app system. Since the city already has front-end developers, you won’t need to design the UI, just the back-end!
 

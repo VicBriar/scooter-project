@@ -146,8 +146,8 @@ describe("find Scooter tests",()=>{
     test("serial, no station",() => {
         expect(ScooterApp.findScooter(1, undefined)).toBeInstanceOf(Scooter)
         expect(ScooterApp.findScooter(1, undefined).serial).toBe(1)
-        expect(ScooterApp.findScooter(1,null)).toBeInstanceOf(Scooter)
-        expect(ScooterApp.findScooter(1,null).serial).toBe(1)
+        expect(ScooterApp.findScooter(1)).toBeInstanceOf(Scooter)
+        expect(ScooterApp.findScooter(1).serial).toBe(1)
     })
 
 })
