@@ -2,7 +2,7 @@ const { mustLogin } = require("./errors");
 const errorsObj = require("./errors");
 
 class User {
-  //password is protected
+  //password is protected with private
   #password;
   constructor(username,password,age){
     if(!username){
@@ -31,6 +31,8 @@ class User {
     }
     this.loggedIn = false;
   }
+
+  //I created get and set methods, as I made the password a private field
   getPassword(){
     return this.#password;
   }

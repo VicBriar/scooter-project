@@ -11,8 +11,15 @@ class ScooterApp {
     "West": []
   }
   static registeredUsers = {}
+
+  //I discussed this registeredScooters variable with Cory. Essentially, it gives me a way to avoid using a double-nested for-loop when testing (I did build this, it's the 'findScooter' function. But it's not efficient, so my tests use this object to acess scooters). In real-world, this would allow the user to select a scooter based on serial number quickly, regarrdless of worst case scenarios (ie last serial in a station of 5000 scooters, or something like that) 
+  //in my implementation, I would change the stations object to an array full of station objects; each station object would have it's name, station address, scooter capacity, ect.. and an array containing references to each scooter it currently holds.
   static registeredScooters = {}
-//methods
+
+
+//~~~~~user methods!~~~~~~~
+
+////helper function to let me make sure a user exists before I perform operations on it
   static userExists(username){
     return Object.keys(ScooterApp.registeredUsers).includes(username);
   }
@@ -69,7 +76,11 @@ class ScooterApp {
       throw new Error(errorsObj.dsntExstUsr)
     }
   }
-//helper function
+
+
+////~~~~~Scooter methods~~~~~~!
+
+//helper function to make sure station exists
   static stationExsists(station){
     return Object.keys(ScooterApp.stations).includes(station)
   }
@@ -92,7 +103,7 @@ class ScooterApp {
     }
   }
 
-  //find scooter; this is a helper function. It is not super efficient, and I think what I did with the regsiteredscooters object is more efficient. But i have this here just in case it's more efficient.
+  //find scooter; this is a helper function. It is not super efficient, and I think what I did with the regsiteredscooters object is more efficient. But i have this here to prove I can create & test the app to it's specifications 
   static findScooter(serial,station=undefined){
     if(!serial){
       throw new Error(errorsObj.needSerial)
@@ -153,6 +164,7 @@ class ScooterApp {
     }
  
   ////print, my beloved
+  ////I'm not sure what the criteria for a 'pretty' print is, because I like how this one looks. But I get the feeling it's not as neat as it could be; please let me know if I could have done it better/more efficiently 
   static print(){
     console.log(ScooterApp,ScooterApp.stations);
   }
